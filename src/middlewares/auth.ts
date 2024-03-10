@@ -1,13 +1,15 @@
 import {Request, Response, NextFunction} from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken"
 
+// verificamos que el usuario tenga el token y asi
+// lo autorizamos o no
 const auth = async (req: Request, res: Response, next: NextFunction) => {
-    try{
+    try {
         let token = req.headers.authorization;
         if(!token){
             res.status(401).json({message: "Not authorized"})
-
         }
+
         token = token!.replace("Bearer ", "")
 
         const decode = jwt.verify(token, process.env.JWT_SECRET || "secret");
@@ -16,7 +18,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
         req.params.id = (decode as any).user_id
 
         next()
-    }catch(error){
+    } catch(error) {
         if (error instanceof TokenExpiredError)
             return res.status(401).json({message: "Not authorized", error})
         else 
@@ -27,11 +29,12 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
 
 export const authorize = (roles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
+      
       if (!roles.includes(req.body.loggedUser.role)) {
-        console.log("your mom")
         return res.status(403).json({ message: "Forbidden" });
       }
-      console.log("Authorizaado por ser admin")
+
+      console.log("Authorized. Admin role")
       next();
     };
   };
