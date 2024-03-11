@@ -17,17 +17,11 @@ app.use(express.urlencoded({ extended : true}))
 
 const port = process.env.PORT || 3000;
 
-app.get("/", (req: Request, res: Response) => {
-    console.log("hi")
-
-
-}
-)
 routes(app);
 
 db.then(() => {
 app.listen(port, () => {
-            console.log("server is running on port ")
+            console.log(`Server is running on port ${port}`)
             }
 );
         }).catch((err) => console.error("Error connecting to MongoDB", err));

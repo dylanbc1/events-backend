@@ -9,15 +9,15 @@ export interface TicketInput{
     quantity: number;
 }
 
-export interface TicketDocument extends mongoose.Document, TicketInput {
+export interface TicketDocument extends TicketInput, mongoose.Document {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
 }
 
 const TicketSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
-    event: { type: mongoose.Schema.Types.ObjectId, ref: "Event", required: true},
+    user: { type: String, required: true },
+    event: { type: String, required: true },
     quantity: {type: Number, required: true },
 }, {timestamps : true, collection: "tickets"});
 

@@ -12,9 +12,9 @@ class UserController {
       const user: UserInput = req.body;
       user.password = await bcrypt.hash(user.password, 10);
       const newUser: UserDocument = await userService.createUser(user);
-      res.status(201).json(newUser);
+      return res.status(201).json(newUser);
     }catch(err){
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   }
 
@@ -24,9 +24,9 @@ class UserController {
 
       const users = await userService.findAll();
 
-      res.json(users)
+      return res.json(users)
     }catch(err){
-      res.status(500).json(err)
+      return res.status(500).json(err)
     }
   }
 
@@ -37,19 +37,24 @@ class UserController {
 
       if(!userExist){
         return res.status(401).json({message: "User not authorized"})
-
       }
 
       const isMatch = await bcrypt.compare(req.body.password, userExist.password)
 
-      if(!isMatch){
+      if(isMatch){
         return res.status(200).json(userService.generateToken(userExist))
+      } else {
+        return res.status(400).json({message: "Incorrect password"})
       }
     }catch(error){
       return res.status(500).json(error)
     }
   }
 
+
+  public async getLandingPage(req: Request, res: Response) {
+    return res.json({message: 'Please LogIn'})
+  }
 }
 
 export default new UserController();

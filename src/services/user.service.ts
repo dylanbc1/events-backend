@@ -34,7 +34,7 @@ class UserService {
 
   public generateToken(user: UserDocument): string{
     try{
-      return jwt.sign({user_id: user.id, email: user.email, role: user.role}, process.env.JWT_SECRET || "secret", {expiresIn: "5m"})
+      return jwt.sign({user_id: user.id, email: user.email, role: user.role}, process.env.JWT_SECRET || "secret", {expiresIn: "10h"})
     }catch(error){
           throw error
     }

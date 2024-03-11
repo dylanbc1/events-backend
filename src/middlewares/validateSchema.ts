@@ -7,6 +7,11 @@ import { AnyZodObject } from "zod"
 const validateSchema = (schema: AnyZodObject) => {
     return async (req: Request, res: Response, next: NextFunction)=>{
         try{
+            // Convertir las fechas de strings a Date si existen en req.body
+            if (req.body && typeof req.body.date === 'string') {
+                req.body.date = new Date(req.body.date);
+            }
+            
             await schema.parseAsync(req.body)
             next()
         }catch(error){

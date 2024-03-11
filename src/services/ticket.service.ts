@@ -2,7 +2,7 @@ import TicketModel, { TicketInput, TicketDocument } from '../models/ticket.model
 
 class TicketService {
     // creamos el ticket recibiendo TicketInput
-  public async createTicket(ticket: TicketInput): Promise<TicketInput> {
+  public async createTicket(ticket: TicketInput): Promise<TicketDocument> {
     try{
         const newTicket = await TicketModel.create(ticket);
         return newTicket;
@@ -12,9 +12,9 @@ class TicketService {
   }
 
   // hallar todos los ticketes de un evento especifico
-  public async findTicketsByEvent(eventId: string): Promise<TicketDocument[] | null> {
+  public async findTicketsByEvent(eventTitle: string): Promise<TicketDocument[] | null> {
     try {
-      const tickets = await TicketModel.find({event: eventId})
+      const tickets = await TicketModel.find({event: eventTitle})
       return tickets;
     } catch(err) {
       throw err;
@@ -32,9 +32,9 @@ class TicketService {
   }
 
   // encontrar tickets por email de usuario
-  public async findByUserEmail(userEmail: string): Promise<TicketDocument | null>{
+  public async findByUserEmail(userEmail: string): Promise<TicketDocument[] | null>{
     try{
-      const ticket = await TicketModel.findOne({email: userEmail})
+      const ticket = await TicketModel.find({user: userEmail})
       return ticket
     }catch(error){
       throw error

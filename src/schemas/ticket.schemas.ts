@@ -4,8 +4,8 @@ import EventSchema from "./event.schemas";
 
 // ticket hace referencia a un User y Event asociados
 const TicketSchema = object({
-    user: UserSchema.required(),
-    event: EventSchema.required(),
+    user: string({required_error: "Email is required"}).email({message: "Invalid email"}),
+    event: string({required_error: "Title is required"}),
     quantity: number({required_error: "Quantity is required"})
 });
 
